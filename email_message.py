@@ -3,7 +3,7 @@ import ujson
 # Enforces the inclusion of a subject and message body. If a single recipient is provided, it is casted to a list
 class EmailMessage:
     def __init__(self, from_email, to_recipients, subject, raw_text_body,
-                 to_cc=None, to_bcc=None, html_body=None, from_name=None):
+                 to_cc=list(), to_bcc=None, html_body=None, from_name=None):
         self.from_email = from_email
         if type(to_recipients) is not list:
             if type(to_recipients) is str:
@@ -17,13 +17,19 @@ class EmailMessage:
         self.raw_text_body = raw_text_body
 
         if to_cc is not None and type(to_cc) is not list:
-            raise TypeError
+            if type(to_cc) is str:
+                self.to_cc = [to_cc]
+            else:
+                raise TypeError
+        else:
+            self.to_cc = to_cc
 
-        self.to_cc = to_cc
-
-        if type(to_bcc) is not str:
+        if to_bcc is not None and type(to_bcc) is not str:
             raise TypeError
-        self.to_bcc = to_bcc
+        elif to_bcc is not None:
+            self.to_bcc = to_bcc
+        else:
+            self.to_bcc = None
 
         self.html_body = html_body
         self.from_name = from_name
