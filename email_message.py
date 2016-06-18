@@ -1,6 +1,8 @@
 import ujson
 
-# Enforces the inclusion of a subject and message body. If a single recipient is provided, it is casted to a list
+
+# Enforces the inclusion of a subject and message body. If a single recipient is provided, it is cast to a list
+# This class is used in place of MIMEMultipart because
 class EmailMessage:
     def __init__(self, from_email, to_recipients, subject, raw_text_body,
                  to_cc=list(), to_bcc=None, html_body=None, from_name=None):
@@ -36,8 +38,8 @@ class EmailMessage:
 
     def __str__(self):
         out = {
-            "Sender" : self.from_email,
-            "Recipients" : self.to_recipients,
-            "Subject" : self.subject
+            "Sender": self.from_email,
+            "Recipients": self.to_recipients,
+            "Subject": self.subject
         }
         return ujson.dumps(out)

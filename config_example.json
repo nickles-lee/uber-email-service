@@ -3,6 +3,7 @@
 //   1) Redact all API keys
 //   2) Add dictionary key for new service
 //   3) Commit change, re-add to gitignore
+// Remove these comments in the actual config
 
 {
   "api_keys": {
