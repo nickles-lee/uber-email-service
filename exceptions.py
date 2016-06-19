@@ -29,12 +29,14 @@ class MismatchedEmailDomainException(Exception):
     def __str__(self):
         return "Mismatched domain specified: {} ".format(self.service)
 
+
 class RecipientEmailUnavailable(Exception):
     def __init__(self, service):
         self.service = service
 
     def __str__(self):
         return "Recipient does not exist or is blocked on {} ".format(self.service)
+
 
 class GenericEmailRoutingError(Exception):
     def __init__(self, service):

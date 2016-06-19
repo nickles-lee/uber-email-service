@@ -40,7 +40,7 @@ def domain_repr(domain, is_root_admin=False, list_endpoint_urls=False):
 def list_domains():
     """
     List domains registered with email pooling service.
-    POST with admin credentials to view further information.
+    POST with "root_api_key" credentials to view further information.
     """
     if request.method == 'POST' and request.data.get('root_api_key') == pool.root_api_key:
         return [domain_repr(dom, is_root_admin=True) for dom in pool.enabled_domains]
@@ -52,7 +52,7 @@ def list_domains():
 def list_domain_providers(domain):
     """
     List a single domain registered with email pooling service, with URLs to relevant endpoints.
-    POST with admin credentials to view further information.
+    POST with "root_api_key" to view further information.
     """
 
     if pool.enabled_domains.get(domain) is None:
@@ -74,7 +74,8 @@ def send_pooled_email(domain):
     * 'from_email' (required): Email to send message from. Email must belong to the specified domain.
     * 'to_recipients' (required): Either a single email address or a list of addresses to send to
     * 'to_cc' (optional): Either a single email address or a list of addresses to send to
-    * 'to_bcc' (optional): a string containing a recipient email address. (Multiple BCCs are not supported by some providers)
+    * 'to_bcc' (optional): a string containing a recipient email address.
+        (Multiple BCCs are not supported by some providers)
     * 'subject' (required): Subject line for email
     * 'raw_text_body' (required): Raw text body for email. Generally replaced by HTML in clients if available
     * 'html_body' (optional): HTML body for email. Requires client support to view properly.
@@ -90,14 +91,11 @@ def send_pooled_email(domain):
             subject = request.data['subject']
             to_recipients = request.data['to_recipients']
 
-
-
             from_name = request.data.get('from_name')
             to_cc = request.data.get('to_cc')
             to_bcc = request.data.get('to_bcc')
             raw_text_body = request.data['raw_text_body']
             html_body = request.data.get('html_body')
-
 
         except KeyError:
             return {"error": "missing mandatory parameter"}, status.HTTP_400_BAD_REQUEST
@@ -115,7 +113,7 @@ def send_pooled_email(domain):
 def toggle_simulated_failure(domain, provider):
     """
     Toggle simulated failure mode for a given provider on a given domain.
-    Requires admin credentials to be provided
+    Requires "root_api_key" to be provided
     """
 
     if pool.enabled_domains.get(domain) is None:

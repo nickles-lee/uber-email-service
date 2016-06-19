@@ -4,6 +4,7 @@ from email_message import EmailMessage
 from services.abstract import EmailService
 from exceptions import *
 
+
 class MailgunEmailService(EmailService):
     name = "mailgun"
 
@@ -41,5 +42,5 @@ class MailgunEmailService(EmailService):
             return True
         elif resp.status_code in [401]:
             raise InvalidAPIKeyException(self.name)
-        elif resp.status_code in [400, 402, 404, 500,502,503,504]:
+        elif resp.status_code in [400, 402, 404, 500, 502, 503, 504]:
             raise GenericEmailRoutingError

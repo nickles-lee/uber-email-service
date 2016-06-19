@@ -4,6 +4,7 @@ from email_message import EmailMessage
 from services.abstract import EmailService
 from exceptions import *
 
+
 class SendgridEmailService(EmailService):
     name = "sendgrid"
 
@@ -24,7 +25,7 @@ class SendgridEmailService(EmailService):
 
         mail.set_subject(email_message.subject)
 
-        # mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}\nINFO: Sent via Sendgrid Email Service".format(
+        # mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}\nSent via Sendgrid Email Service".format(
         mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}".format(
             email_message.raw_text_body)))
 
@@ -45,7 +46,6 @@ class SendgridEmailService(EmailService):
 
         resp = self.sg_context.client.mail.send.post(request_body=mail.get())
 
-
         # Note that transient (4XX) errors are counted as failures; expedient/guaranteed delivery is ranked higher than
         # ensuring exactly-once sending. This may not be preferable in all contexts
         if resp.status_code in [202, 250]:
@@ -58,5 +58,3 @@ class SendgridEmailService(EmailService):
             raise GenericEmailRoutingError(self.name)
         else:
             raise GenericEmailRoutingError(self.name)
-
-        return resp

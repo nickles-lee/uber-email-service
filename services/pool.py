@@ -36,12 +36,9 @@ class PooledEmailService(EmailService):
             self.enabled_domains = enabled_domains
             self.root_api_key = email_config.get('root_api_key')
 
-        except:
+        except Exception:
             logging.error("Fatal error loading pool configurations. (Check JSON syntax?)")
             sys.exit(1)
-
-    def validate_send_email(msg: EmailMessage) -> bool:
-        return msg.from_email.split("@").get(1) == email_config.get("email_domain")
 
     def get_email_services(self, pool_api_key, email_message: EmailMessage):
         domain = email_message.from_email.split("@")[1]
@@ -62,7 +59,7 @@ class PooledEmailService(EmailService):
                 services_unsuccessful[s.name] = "Simulating Failure"
                 continue
             try:
-                resp = s.send_email(email_message)
+                s.send_email(email_message)
                 return {"result": "success",
                         "service_used": s.name,
                         "services_unsuccessful": services_unsuccessful}
