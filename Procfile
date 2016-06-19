@@ -1,1 +1,1 @@
-web: gunicorn uber-email-service:app --log-file -
+web: gunicorn uber-email-service:app --log-file -b 0.0.0.0:80 -
