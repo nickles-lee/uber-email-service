@@ -6,18 +6,24 @@
 // Remove these comments in the actual config
 
 {
-  "api_keys": {
-    "mailgun": "INSERT_KEY_HERE",
-    "sendgrid": "INSERT_KEY_HERE"
-  },
-  "email_domain": "INSERT_DOMAIN_HERE",
-  "enabled_services": [
-    "mailgun",
-    "sendgrid"
-  ],
-  "permitted_api_keys" : [
-
+  "root_api_key": "INSERT HERE",
+  "email_services": [
+    {
+      "email_domain": "example.com",
+      "pool_api_key": "INSERT HERE",
+      "enabled_services": {
+        "Mailgun": {
+          "api_key": "INSERT HERE",
+          "priority_value": 10
+        },
+        "Sendgrid": {
+          "api_key": "INSERT HERE",
+          "priority_value": 20
+        }
+      }
+    }
   ]
 }
+
 
 

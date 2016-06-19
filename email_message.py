@@ -6,6 +6,7 @@ import ujson
 class EmailMessage:
     def __init__(self, from_email, to_recipients, subject, raw_text_body,
                  to_cc=list(), to_bcc=None, html_body=None, from_name=None):
+
         self.from_email = from_email
         if type(to_recipients) is not list:
             if type(to_recipients) is str:
