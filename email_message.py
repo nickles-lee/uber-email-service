@@ -8,6 +8,8 @@ class EmailMessage:
                  to_cc=list(), to_bcc=None, html_body=None, from_name=None):
 
         self.from_email = from_email
+        self.subject = subject
+        self.raw_text_body = raw_text_body
         if type(to_recipients) is not list:
             if type(to_recipients) is str:
                 self.to_recipients = [to_recipients]
@@ -16,26 +18,31 @@ class EmailMessage:
         else:
             self.to_recipients = to_recipients
 
-        self.subject = subject
-        self.raw_text_body = raw_text_body
-
-        if to_cc is not None and type(to_cc) is not list:
-            if type(to_cc) is str:
-                self.to_cc = [to_cc]
-            else:
-                raise TypeError
-        else:
+        if to_cc is None:
+            self.to_cc = None
+        elif type(to_cc) is str:
+            self.to_cc = [to_cc]
+        elif type(to_cc) is list:
             self.to_cc = to_cc
-
-        if to_bcc is not None and type(to_bcc) is not str:
-            raise TypeError
-        elif to_bcc is not None:
-            self.to_bcc = to_bcc
         else:
-            self.to_bcc = None
+            raise TypeError
 
-        self.html_body = html_body
-        self.from_name = from_name
+        if to_bcc is None:
+            self.to_bcc = None
+        elif type(to_bcc) is not str:
+            raise TypeError
+        else:
+            self.to_bcc = to_bcc
+
+        if html_body is None:
+            self.html_body = None
+        else:
+            self.html_body = html_body
+
+        if from_name is None:
+            self.from_name = None
+        else:
+            self.from_name = from_name
 
     def __str__(self):
         out = {

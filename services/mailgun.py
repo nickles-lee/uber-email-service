@@ -17,7 +17,8 @@ class MailgunEmailService(EmailService):
 
         post_req_payload = {"to": ",".join(email_message.to_recipients),
                             "subject": email_message.subject,
-                            "text": "{}\nINFO: Sent via Mailgun Email Service".format(email_message.raw_text_body)
+                            # "text": "{}\nINFO: Sent via Mailgun Email Service".format(email_message.raw_text_body)
+                            "text": "{}".format(email_message.raw_text_body)
                             }
 
         if email_message.from_name is not None:
@@ -25,7 +26,7 @@ class MailgunEmailService(EmailService):
         else:
             post_req_payload["from"] = email_message.from_email
 
-        if len(email_message.to_cc) > 0:
+        if email_message.to_cc is not None and len(email_message.to_cc) > 0:
             post_req_payload["cc"] = ",".join(email_message.to_cc)
 
         if email_message.to_bcc is not None:

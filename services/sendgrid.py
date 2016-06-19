@@ -24,7 +24,8 @@ class SendgridEmailService(EmailService):
 
         mail.set_subject(email_message.subject)
 
-        mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}\nINFO: Sent via Sendgrid Email Service".format(
+        # mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}\nINFO: Sent via Sendgrid Email Service".format(
+        mail.add_content(sendgrid.helpers.mail.Content("text/plain", "{}".format(
             email_message.raw_text_body)))
 
         if email_message.html_body is not None:
@@ -33,8 +34,9 @@ class SendgridEmailService(EmailService):
         for t in email_message.to_recipients:
             personalization.add_to(sendgrid.helpers.mail.Email(t))
 
-        for c in email_message.to_cc:
-            personalization.add_cc(sendgrid.helpers.mail.Email(c))
+        if email_message.to_cc is not None:
+            for c in email_message.to_cc:
+                personalization.add_cc(sendgrid.helpers.mail.Email(c))
 
         if email_message.to_bcc is not None:
             personalization.add_bcc(sendgrid.helpers.mail.Email(email_message.to_bcc))

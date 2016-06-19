@@ -87,25 +87,26 @@ def send_pooled_email(domain):
     elif request.method == 'POST' and request.data.get('pool_api_key') == pool.enabled_domains[domain]['pool_api_key']:
         try:
             from_email = request.data['from_email']
-            from_name = request.data.get('from_name')
-
+            subject = request.data['subject']
             to_recipients = request.data['to_recipients']
+
+
+
+            from_name = request.data.get('from_name')
             to_cc = request.data.get('to_cc')
             to_bcc = request.data.get('to_bcc')
-
-            subject = request.data['subject']
-
             raw_text_body = request.data['raw_text_body']
             html_body = request.data.get('html_body')
+
+
         except KeyError:
             return {"error": "missing mandatory parameter"}, status.HTTP_400_BAD_REQUEST
         except TypeError:
             return {"error": "invalid parameter provided"}, status.HTTP_400_BAD_REQUEST
 
-
-        return pool.send_email(
-            EmailMessage(from_email, to_recipients, subject, raw_text_body,
-                         to_cc=to_cc, to_bcc=to_bcc, html_body=html_body, from_name=from_name))
+        return pool.send_email(EmailMessage(from_email, to_recipients, subject, raw_text_body,
+                                            to_cc=to_cc, to_bcc=to_bcc, html_body=html_body, from_name=from_name),
+                               request.data.get('pool_api_key'))
     else:
         return {"error": "valid pool api key required for sending emails"}, status.HTTP_401_UNAUTHORIZED
 
