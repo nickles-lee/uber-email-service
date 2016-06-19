@@ -1,0 +1,1 @@
+web: gunicorn uber-email-service:app --log-file -
