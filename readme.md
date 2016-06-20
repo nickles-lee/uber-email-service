@@ -76,6 +76,7 @@ No monitoring is included in this deployment.  This could be quickly implemented
 
 ###Logging
 Logging is handled by the Python logger class. Logging parameters are specified at runtime, or in this case the Heroku Procfile.
+The extent of logging could be improved. In practice, activity on API endpoints, exceptions, and authorisation failures should be logged.
 
 In a minimum production instance, Logrotate would be used to prevent logs from becoming excessively large.
 

@@ -35,6 +35,7 @@ class PooledEmailService(AbstractEmailService):
 
             self.enabled_domains = enabled_domains
             self.root_api_key = email_config.get('root_api_key')
+            logging.info("Successfully loaded pool config")
 
         except Exception:
             logging.error("Fatal error loading pool configurations. (Check JSON syntax?)")
