@@ -33,7 +33,7 @@ The first test apparatus (pytest) provides unit testing of the Python modules an
 
 The second test apparatus provides an integration test. Simply specify the destination email address, and it will send a series of emails with different parameters. Manual verification of those emails is required, although an automated testing system could monitor an email inbox and check the incoming emails against the expected results.
 
-    python3 online_integration_test.py 'https://whispering-taiga-53034.herokuapp.com' $DOMAIN $RECIPIENT_EMAIL $POOL_API_KEY $ROOT_API_KEY
+    python3 integrationtest_online.py 'https://whispering-taiga-53034.herokuapp.com' $DOMAIN $RECIPIENT_EMAIL $POOL_API_KEY $ROOT_API_KEY
 
 ##UX:
 The user interface consists of a boilerplate Flask-API, plus documentation. The following API endpoints exist:
