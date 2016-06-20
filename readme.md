@@ -22,7 +22,7 @@ The deployment in Heroku uses TLS to protect data in transit. API keys are exclu
 
 Level one provides access to the pooling service for a particular domain, while level two provides access to the API keys for each domain and the ability to enable/disable a simulated failure mode for each service.
 
-In a production environment, the ability to list API keys would not be enabled; it serves more as a proof of concept for the existence of an administrative API key. The ability to upload new configurations *could* be added depending on user needs, but it would greatly increase the power and risk associated with the root\_api\_key.
+In a production environment, the ability to list API keys or domains would not be enabled; it serves more as a proof of concept for the existence of an administrative API key. The ability to upload new configurations *could* be added depending on user needs, but it would greatly increase the power and risk associated with the root\_api\_key.
 
 Rate limiting is not implemented due to a lack of clarity about the point at which Sendgrid/Mailgun rate limit queries. In case of abuse, rate-limiting would occur outside of the service.
 
