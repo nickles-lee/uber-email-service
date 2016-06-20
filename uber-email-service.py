@@ -6,8 +6,11 @@ from services.pool import PooledEmailService
 from services.sendgrid import SendgridEmailService
 from email_message import EmailMessage
 
+import logging
+
 app = FlaskAPI(__name__)
 pool = PooledEmailService()
+logging.basicConfig(level=logging.INFO)
 
 
 def domain_repr(domain, is_root_admin=False, list_endpoint_urls=False):
@@ -42,7 +45,9 @@ def list_domains():
     List domains registered with email pooling service.
     POST with "root_api_key" credentials to view further information.
     """
+    logging.info("list domain request from {}".format(request.remote_addr))
     if request.method == 'POST' and request.data.get('root_api_key') == pool.root_api_key:
+        logging.info("root_api_key used for detailed domain listing from {}".format(request.remote_addr))
         return [domain_repr(dom, is_root_admin=True) for dom in pool.enabled_domains]
     else:
         return [domain_repr(dom) for dom in pool.enabled_domains]
@@ -56,8 +61,10 @@ def list_domain_providers(domain):
     """
 
     if pool.enabled_domains.get(domain) is None:
+        logging.exception("user requested unknown domain from ip {}".format(request.remote_addr))
         return {"error": "requested domain not found"}, status.HTTP_404_NOT_FOUND
     elif request.method == 'POST' and request.data.get('root_api_key') == pool.root_api_key:
+        logging.info("root_api_key used for detailed domain listing from {}".format(request.remote_addr))
         return [domain_repr(dom, is_root_admin=True, list_endpoint_urls=True) for dom in pool.enabled_domains]
     else:
         return [domain_repr(dom, list_endpoint_urls=True) for dom in pool.enabled_domains]
@@ -84,8 +91,10 @@ def send_pooled_email(domain):
     if request.method == 'GET':
         return {"error": "this call only accepts POST requests"}, status.HTTP_400_BAD_REQUEST
     elif pool.enabled_domains.get(domain) is None:
+        logging.exception("user requested unknown domain from ip {}".format(request.remote_addr))
         return {"error": "requested domain is not found"}, status.HTTP_404_NOT_FOUND
     elif request.method == 'POST' and request.data.get('pool_api_key') == pool.enabled_domains[domain]['pool_api_key']:
+        logging.info("user attempted to send email from ip {}".format(request.remote_addr))
         try:
             from_email = request.data['from_email']
             subject = request.data['subject']
@@ -102,10 +111,15 @@ def send_pooled_email(domain):
         except TypeError:
             return {"error": "invalid parameter provided"}, status.HTTP_400_BAD_REQUEST
 
-        return pool.send_email(EmailMessage(from_email, to_recipients, subject, raw_text_body,
-                                            to_cc=to_cc, to_bcc=to_bcc, html_body=html_body, from_name=from_name),
-                               request.data.get('pool_api_key'))
+        result = pool.send_email(EmailMessage(from_email, to_recipients, subject, raw_text_body,
+                                              to_cc=to_cc, to_bcc=to_bcc, html_body=html_body, from_name=from_name),
+                                 request.data.get('pool_api_key'))
+
+        logging.info("email sent from {} using provider {}".format(from_email, result['service_used']))
+        return result
     else:
+        logging.exception(
+            "unauthorized attempt to send email on domain {} from ip {}".format(domain, request.remote_addr))
         return {"error": "valid pool api key required for sending emails"}, status.HTTP_401_UNAUTHORIZED
 
 
@@ -119,6 +133,7 @@ def toggle_simulated_failure(domain, provider):
     if pool.enabled_domains.get(domain) is None:
         return {"error": "requested domain is not found"}, status.HTTP_404_NOT_FOUND
     elif request.method == 'POST' and request.data.get('root_api_key') == pool.root_api_key:
+        logging.info("root_api_key to toggle sim-fail on {}/{}".format(domain, provider))
         if provider == "mailgun":
             for s in pool.enabled_domains[domain]['enabled_services']:
                 if isinstance(s, MailgunEmailService):
@@ -130,6 +145,7 @@ def toggle_simulated_failure(domain, provider):
         return {"error": "requested service is not found"}, status.HTTP_404_NOT_FOUND
 
     else:
+        logging.info("unauthorised attempt to toggle sim-fail on {}/{}".format(domain, provider))
         return {"error": "root api key required for failure simulation"}, status.HTTP_401_UNAUTHORIZED
 
 

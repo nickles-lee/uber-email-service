@@ -18,7 +18,7 @@ The email service pooling is built off of three main components:
 * uber-email-service: This is the Flask endpoint that verifies that API calls have appropriate permissions and performs appropriate serialisation/deserialisation.
 
 ##Security:
-The deployment in Heroku uses TLS to protect data in transit. API keys are excluded from version control in order to prevent automated harvesting, and two levels of API access exist.
+The deployment in Heroku uses TLS to protect data in transit. API keys are excluded from version control in order to prevent automated harvesting, and two levels of API access exist. The Python Requests library and Flask provide basic input sanitization
 
 Level one provides access to the pooling service for a particular domain, while level two provides access to the API keys for each domain and the ability to enable/disable a simulated failure mode for each service.
 
