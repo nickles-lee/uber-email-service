@@ -87,6 +87,7 @@ def send_pooled_email(domain):
     * 'raw_text_body' (required): Raw text body for email. Generally replaced by HTML in clients if available
     * 'html_body' (optional): HTML body for email. Requires client support to view properly.
 
+    Data may be HTTP form encoded or JSON encoded, though JSON is a requirement for handling multiple recipients/CCs
     """
     if request.method == 'GET':
         return {"error": "this call only accepts POST requests"}, status.HTTP_400_BAD_REQUEST
@@ -115,8 +116,12 @@ def send_pooled_email(domain):
                                               to_cc=to_cc, to_bcc=to_bcc, html_body=html_body, from_name=from_name),
                                  request.data.get('pool_api_key'))
 
-        logging.info("email sent from {} using provider {}".format(from_email, result['service_used']))
-        return result
+        if result['result'] == "error":
+            logging.info("Unable to send email")
+            return result, status.HTTP_503_SERVICE_UNAVAILABLE
+        else:
+            logging.info("email sent from {} using provider {}".format(from_email, result['service_used']))
+            return result
     else:
         logging.exception(
             "unauthorized attempt to send email on domain {} from ip {}".format(domain, request.remote_addr))
