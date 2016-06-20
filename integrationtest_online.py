@@ -16,7 +16,7 @@ try:
     root_api_key = sys.argv[5]
 except IndexError:
     print(
-        "Usage: 'python3 online_integration_test.py [base_api_url] [domain] [destination_email] [pool_api_key] [root_api_key]")
+        "Usage: 'python3 integrationtest_online.py [base_api_url] [domain] [destination_email] [pool_api_key] [root_api_key]")
     sys.exit(1)
 
 full_text_query = requests.post("{}/{}/send".format(url, domain), headers={"Accept": "application/json"}, json={
@@ -57,7 +57,7 @@ mg_ftq = requests.post("{}/{}/send".format(url, domain), headers={"Accept": "app
     "to_cc": dest_email,
     "to_bcc": dest_email,
     "subject": "4: Mailgun Email",
-    "raw_text_body": "Sent via top priority service mailgun"
+    "raw_text_body": "Sent via low priority service mailgun"
 })
 
 mg_bbcc = requests.post("{}/{}/send".format(url, domain), headers={"Accept": "application/json"}, json={
@@ -66,7 +66,7 @@ mg_bbcc = requests.post("{}/{}/send".format(url, domain), headers={"Accept": "ap
     "to_recipients": dest_email,
     "to_bcc": ["foo@example.com", "bademail.com"],
     "subject": "5: I shouldn't see this",
-    "raw_text_body": "Sent via top priority service mailgun"
+    "raw_text_body": "Sent via low priority service mailgun"
 })
 
 mg_html = requests.post("{}/{}/send".format(url, domain), headers={"Accept": "application/json"}, json={
@@ -88,9 +88,10 @@ this_will_fail = requests.post("{}/{}/send".format(url, domain), headers={"Accep
     "to_cc": dest_email,
     "to_bcc": dest_email,
     "subject": "7: This will fail",
-    "raw_text_body": "Sent via top priority service mailgun"
+    "raw_text_body": "This is being sent through nothing because both services are down"
 })
 
+# Re-Enable both services
 cleanup = requests.post("{}/{}/mailgun/fail".format(url, domain), headers={"Accept": "application/json"},
                           data={"root_api_key": root_api_key})
 cleanup_2 = requests.post("{}/{}/sendgrid/fail".format(url, domain), headers={"Accept": "application/json"},
