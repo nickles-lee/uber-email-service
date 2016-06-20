@@ -1,16 +1,23 @@
 import json
-
+import exceptions
 
 # Enforces the inclusion of a subject and message body. If a single recipient is provided, it is cast to a list
 # This class is used in place of MIMEMultipart because
+
+# One of the uglier classes in this project
 class EmailMessage:
     def __init__(self, from_email, to_recipients, subject, raw_text_body,
                  to_cc=list(), to_bcc=None, html_body=None, from_name=None):
 
+        if len(from_email.split('@')) < 2:              # Very quick error checking for valid email parameter
+            raise TypeError
+
         self.from_email = from_email
         self.subject = subject
         self.raw_text_body = raw_text_body
-        if type(to_recipients) is not list:
+
+
+        if type(to_recipients) is not list:             # Let validation of email recipients occur with email services
             if type(to_recipients) is str:
                 self.to_recipients = [to_recipients]
             else:

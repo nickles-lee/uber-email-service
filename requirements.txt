@@ -4,3 +4,4 @@ sendgrid
 Flask-API
 markdown
 gunicorn
+pytest

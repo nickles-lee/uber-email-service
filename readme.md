@@ -29,7 +29,7 @@ Rate limiting is not implemented due to a lack of clarity about the point at whi
 ##Testing:
 Two test apparatuses are available.
 
-The first test apparatus provides unit testing of the Python modules and functions.
+The first test apparatus (pytest) provides unit testing of the Python modules and functions. It may be triggered with py.test
 
 The second test apparatus provides an integration test. Simply specify the destination email address, and it will send a series of emails with different parameters. Manual verification of those emails is required, although an automated testing system could monitor an email inbox and check the incoming emails against the expected results.
 
