@@ -1,4 +1,4 @@
-import ujson
+import json
 
 
 # Enforces the inclusion of a subject and message body. If a single recipient is provided, it is cast to a list
@@ -50,4 +50,4 @@ class EmailMessage:
             "Recipients": self.to_recipients,
             "Subject": self.subject
         }
-        return ujson.dumps(out)
+        return json.dumps(out)

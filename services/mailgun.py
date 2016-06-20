@@ -1,11 +1,11 @@
 import requests
 
 from email_message import EmailMessage
-from services.abstract import EmailService
+from services.abstract import AbstractEmailService
 from exceptions import *
 
 
-class MailgunEmailService(EmailService):
+class MailgunEmailService(AbstractEmailService):
     name = "mailgun"
 
     def __init__(self, domain, api_key, priority=0):

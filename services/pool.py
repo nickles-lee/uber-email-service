@@ -3,13 +3,13 @@ import logging
 import sys
 
 from email_message import EmailMessage
-from services.abstract import EmailService
+from services.abstract import AbstractEmailService
 from services.mailgun import MailgunEmailService
 from services.sendgrid import SendgridEmailService
 from exceptions import *
 
 
-class PooledEmailService(EmailService):
+class PooledEmailService(AbstractEmailService):
     def __init__(self):
         try:
 

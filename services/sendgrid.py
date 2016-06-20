@@ -1,11 +1,11 @@
 import sendgrid
 
 from email_message import EmailMessage
-from services.abstract import EmailService
+from services.abstract import AbstractEmailService
 from exceptions import *
 
 
-class SendgridEmailService(EmailService):
+class SendgridEmailService(AbstractEmailService):
     name = "sendgrid"
 
     def __init__(self, domain, api_key, priority=0):

@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from email_message import EmailMessage
 
 
-class EmailService:
+class AbstractEmailService:
     __metaclass__ = ABCMeta
 
     name = "Undefined service"
