@@ -1,5 +1,5 @@
 from flask import request
-from flask.ext.api import FlaskAPI, status
+from flask_api import FlaskAPI, status
 
 from services.mailgun import MailgunEmailService
 from services.pool import PooledEmailService
