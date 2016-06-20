@@ -38,13 +38,14 @@ The user interface consists of a boilerplate Flask-API, plus documentation. The 
 
 * / : List available domains and their services/priorities.
 
-* /<domain> : List domain and its services/priorities.
+* /[domain] : List domain and its services/priorities.
 
-* /<domain>/<provider>/fail : Toggle simulated failure on a domain's service.
+* /[domain]/[provider]/fail : Toggle simulated failure on a domain's service.
 
-* /<domain>/send : Send an email through the pooled service.
+* /[domain]/send : Send an email through the pooled service.
 
-* /<domain>/<provider>/send: This endpoint is not implemented, but if the ability to bypass the pooled email service was desired, it would be quick to make it possible to explicitly specify a particular email provider to send with.
+* /[domain]/[provider]/send: This endpoint is not implemented, but if the ability to bypass the pooled email service was desired, it would be quick to make it possible to explicitly specify a particular email provider to send with.
+
 
 ##Libaries:
 
@@ -102,4 +103,5 @@ From the first "release" onwards, or if there is more than one developer, I like
 #Links:
 * Hosted Application: https://whispering-taiga-53034.herokuapp.com/
 * GitHub Repository: https://github.com/nickles-lee/uber-email-service
-* Service Config file: Not hosted online, to be shared with recruiting. (I'm assuming you also make your own)
+* June 2016 CV: https://github.com/nickles-lee/uber-email-service/blob/master/cv_Nick%20Lee.pdf
+* Service Config file: Not hosted online, to be shared with recruiting by email. (I'm assuming you also make your own)
